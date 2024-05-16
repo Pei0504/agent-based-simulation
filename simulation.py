@@ -22,14 +22,22 @@ class Agent:
         return empty_patches
 
 class World:
-    def __init__(self, size):
+    def __init__(self, size, num_agents):
         self.size = size
         self.grid = [[None for _ in range(size)] for _ in range(size)]
         self.agents = []
+        self.initialize_agents(num_agents)
 
-    def add_agent(self, agent):
-        self.agents.append(agent)
-        self.grid[agent.position[0]][agent.position[1]] = agent
+    def initialize_agents(self, num_agents):
+        for i in range(num_agents):
+            position = self.find_empty_patch()
+            agent = Agent(i, position)
+            self.agents.append(agent)
+            self.grid[position[0]][position[1]] = agent
+
+    def find_empty_patch(self):
+        empty_patches = [(i, j) for i in range(self.size) for j in range(self.size) if self.grid[i][j] is None]
+        return random.choice(empty_patches) if empty_patches else None
 
     def step(self):
         for agent in self.agents:
@@ -41,14 +49,11 @@ class World:
         print("--------")
 
 
-world = World(5)  
-for i in range(3):  
-    agent = Agent(i, (i, i))
-    world.add_agent(agent)
+world = World(size=5, num_agents=3)  
 
 # 運行模擬
 for _ in range(5):  
     world.step()
-    world.display()  
+    world.display() 
 
 
