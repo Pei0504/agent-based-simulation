@@ -51,7 +51,7 @@ class World:
 
 world = World(size=5, num_agents=3)  
 
-# 運行模擬
+
 for _ in range(5):  
     world.step()
     world.display() 
